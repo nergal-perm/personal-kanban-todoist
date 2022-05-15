@@ -3,7 +3,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'baseUrl',
-		'connection'
+		'connection',
+		'baseProjects'
 	],
 	#category : #TdKanban
 }
@@ -11,14 +12,18 @@ Class {
 { #category : #accessing }
 TdKanbanConnection >> initialize [
 	baseUrl := 'https://api.todoist.com/rest/v1'.
+	baseProjects := #('Current' 'Backlog' 'Inbox')
 ]
 
 { #category : #accessing }
 TdKanbanConnection >> projects [
 
-	^ (STONJSON fromString: (connection
-			   url: baseUrl , '/projects';
-			   get)) collect: [ :projectDict | TdKanbanProject new rawData: projectDict ]
+	| ston |
+	ston := STONJSON fromString: (connection
+			         url: baseUrl , '/projects';
+			         get).
+	^ (ston reject: [ :pr | baseProjects includes: (pr at: 'name') ]) 
+		  collect: [ :pr | TdKanbanProject new rawData: pr ]
 ]
 
 { #category : #accessing }
