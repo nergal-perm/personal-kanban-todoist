@@ -1,5 +1,5 @@
 Class {
-	#name : #TdKanbanTask,
+	#name : #TdKanbanProject,
 	#superclass : #Object,
 	#instVars : [
 		'rawData'
@@ -8,6 +8,7 @@ Class {
 }
 
 { #category : #accessing }
-TdKanbanTask >> rawData: aDictionary [
-	rawData := aDictionary 
+TdKanbanProject >> rawData: aDictionary [
+
+	rawData := aDictionary
 ]
