@@ -1,5 +1,5 @@
 Class {
-	#name : #TdKanbanConnection,
+	#name : #TdkbConnection,
 	#superclass : #Object,
 	#instVars : [
 		'baseUrl',
@@ -9,29 +9,29 @@ Class {
 }
 
 { #category : #accessing }
-TdKanbanConnection >> initialize [
+TdkbConnection >> initialize [
 	baseUrl := 'https://api.todoist.com/rest/v1'
 ]
 
 { #category : #accessing }
-TdKanbanConnection >> projects [
+TdkbConnection >> projects [
 
 	| ston |
 	ston := STONJSON fromString: (connection
 			         url: baseUrl , '/projects';
 			         get).
-	^ TdKanbanProjectCollection new withProjects: ston
+	^ TdkbProjectCollection new withProjects: ston
 ]
 
 { #category : #accessing }
-TdKanbanConnection >> tasks [
+TdkbConnection >> tasks [
 
 	^ (STONJSON fromString: (connection
 			   url: baseUrl , '/tasks';
-			   get)) collect: [ :taskDict | TdKanbanTask new rawData: taskDict ]
+			   get)) collect: [ :taskDict | TdkbTask new rawData: taskDict ]
 ]
 
 { #category : #accessing }
-TdKanbanConnection >> withToken: aString [ 
+TdkbConnection >> withToken: aString [ 
     connection := ZnClient new headerAt: 'Authorization' put: 'Bearer ', aString
 ]

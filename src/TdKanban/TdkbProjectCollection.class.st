@@ -1,5 +1,5 @@
 Class {
-	#name : #TdKanbanProjectCollection,
+	#name : #TdkbProjectCollection,
 	#superclass : #Object,
 	#instVars : [
 		'items',
@@ -9,7 +9,7 @@ Class {
 }
 
 { #category : #accessing }
-TdKanbanProjectCollection >> gtProjectsFor: aView [
+TdkbProjectCollection >> gtProjectsFor: aView [
 
 	<gtView>
 	^ aView columnedList
@@ -26,14 +26,14 @@ TdKanbanProjectCollection >> gtProjectsFor: aView [
 ]
 
 { #category : #accessing }
-TdKanbanProjectCollection >> initialize [
+TdkbProjectCollection >> initialize [
 
 	baseProjects := #( 'Current' 'Backlog' 'Inbox' )
 ]
 
 { #category : #accessing }
-TdKanbanProjectCollection >> withProjects: ston [ 
+TdkbProjectCollection >> withProjects: ston [ 
 
 items := (ston reject: [ :pr | baseProjects includes: (pr at: 'name') ]) 
-		  collect: [ :pr | TdKanbanProject new rawData: pr ]
+		  collect: [ :pr | TdkbProject new rawData: pr ]
 ]
