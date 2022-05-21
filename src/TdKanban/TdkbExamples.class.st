@@ -57,3 +57,27 @@ TdkbExamples >> emptySectionConvertsToSimpleTask [
 	self assert: emptyTask name = 'To do'.
 	^ emptyTask
 ]
+
+{ #category : #accessing }
+TdkbExamples >> sectionWithTaskConvertsToTaskTree [
+
+	<gtExample>
+	| taskTree |
+	taskTree := self todoSectionWithSingleTask asTask.
+	self assert: taskTree isNotEmpty.
+	^ taskTree
+]
+
+{ #category : #accessing }
+TdkbExamples >> simpleTask [
+
+	^ TdkbTask new rawData:
+		  (Dictionary with: #content -> 'Super simple task')
+]
+
+{ #category : #accessing }
+TdkbExamples >> todoSectionWithSingleTask [
+
+	| section |
+	^ self emptySection withTasks: (OrderedCollection with: self simpleTask)
+]

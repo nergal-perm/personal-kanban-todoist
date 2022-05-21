@@ -19,7 +19,10 @@ TdkbSection >> asTask [
 
 	| taskData |
 	taskData := Dictionary with: #content -> self name.
-	^ TdkbTask new rawData: taskData
+	^ TdkbTask new
+		  rawData: taskData;
+		  withTasks: tasks;
+		  yourself
 ]
 
 { #category : #accessing }
@@ -43,4 +46,9 @@ TdkbSection >> rawData: aDictionary [
 TdkbSection >> tasks [
 	tasks ifNil: [ tasks:= OrderedCollection new].
 	^ tasks
+]
+
+{ #category : #'as yet unclassified' }
+TdkbSection >> withTasks: aCollection [ 
+	tasks := aCollection.
 ]
