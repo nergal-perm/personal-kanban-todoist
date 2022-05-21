@@ -11,7 +11,7 @@ TdkbExamples >> descriptionComment [
 	| comment |
 	comment := TdkbComment new rawData:
 		           (Dictionary with:
-			            #content -> '[DESC]<br/>Some description here.').
+			            #content -> ('[DESC]', Character lf asString, 'Some description here.')).
 	self assert: comment text equals: 'Some description here'.
 	^ comment
 ]
@@ -35,5 +35,25 @@ TdkbExamples >> emptyProjectConvertsToSimpleTask [
 	| emptyTask |
 	emptyTask := self emptyProject asTask.
 	self assert: emptyTask name = 'An empty project'.
+	^ emptyTask
+]
+
+{ #category : #accessing }
+TdkbExamples >> emptySection [
+
+	<gtExample>
+	| emptySection |
+	emptySection := TdkbSection withName: 'To do'.
+	self assert: emptySection isEmpty.
+	^ emptySection
+]
+
+{ #category : #accessing }
+TdkbExamples >> emptySectionConvertsToSimpleTask [
+
+	<gtExample>
+	| emptyTask |
+	emptyTask := self emptySection asTask.
+	self assert: emptyTask name = 'To do'.
 	^ emptyTask
 ]

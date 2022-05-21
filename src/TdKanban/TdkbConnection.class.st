@@ -9,6 +9,23 @@ Class {
 }
 
 { #category : #accessing }
+TdkbConnection >> comments [
+
+	^ STONJSON fromString: (connection
+			   url: baseUrl , '/comments';
+			   get)
+]
+
+{ #category : #accessing }
+TdkbConnection >> commentsForProject: aProjectId [
+
+	^ STONJSON fromString: (connection
+			   url: baseUrl , '/comments';
+			   queryAt: 'project_id' put: aProjectId;
+			   get)
+]
+
+{ #category : #accessing }
 TdkbConnection >> initialize [
 	baseUrl := 'https://api.todoist.com/rest/v1'
 ]
@@ -21,6 +38,14 @@ TdkbConnection >> projects [
 			         url: baseUrl , '/projects';
 			         get).
 	^ TdkbProjectCollection new withProjects: ston
+]
+
+{ #category : #accessing }
+TdkbConnection >> sectionsForProject: aProjectId [
+	^ STONJSON fromString: (connection
+		url: baseUrl, '/sections';
+		queryAt: 'project_id' put: aProjectId;
+		get) 
 ]
 
 { #category : #accessing }

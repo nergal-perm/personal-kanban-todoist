@@ -43,9 +43,7 @@ TdkbProject >> id [
 { #category : #accessing }
 TdkbProject >> isEmpty [
 
-	^ self tasks isNil
-		  ifTrue: [ ^ true ]
-		  ifFalse: [ ^ self tasks isEmpty ]
+	^ self tasks isEmpty
 ]
 
 { #category : #accessing }
@@ -62,5 +60,7 @@ TdkbProject >> rawData: aDictionary [
 
 { #category : #accessing }
 TdkbProject >> tasks [
+
+	tasks ifNil: [ tasks := OrderedCollection new ].
 	^ tasks
 ]
