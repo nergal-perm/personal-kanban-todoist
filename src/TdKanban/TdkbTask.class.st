@@ -8,6 +8,11 @@ Class {
 	#category : #TdKanban
 }
 
+{ #category : #'as yet unclassified' }
+TdkbTask >> asTask [
+	^ self
+]
+
 { #category : #accessing }
 TdkbTask >> children [
 	^ self tasks

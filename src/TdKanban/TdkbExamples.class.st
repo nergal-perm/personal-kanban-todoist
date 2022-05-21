@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #accessing }
+TdkbExamples >> aProjectWithSectionAndTask [
+
+	<gtExample>
+	<noTest>
+	^ self emptyProject
+		  addSections: { self todoSectionWithSingleTask };
+		  addTasks: { (self simpleTask: 'Task outside of a section') };
+		  yourself
+]
+
+{ #category : #accessing }
 TdkbExamples >> emptyProject [
 
 	"Empty project means a project with just a title"
@@ -57,6 +68,16 @@ TdkbExamples >> sectionWithTaskConvertsToTaskTree [
 ]
 
 { #category : #accessing }
+TdkbExamples >> simpleProjectConvertsToTask [
+
+	<gtExample>
+	| taskTree |
+	taskTree := self aProjectWithSectionAndTask asTask.
+	self assert: taskTree isNotEmpty.
+	^ taskTree
+]
+
+{ #category : #accessing }
 TdkbExamples >> simpleTask: aTaskTitle [
 
 	<gtExample>
@@ -72,5 +93,5 @@ TdkbExamples >> todoSectionWithSingleTask [
 	<noTest>
 	| section |
 	^ (self emptySection: 'To do') withTasks:
-		  (OrderedCollection with: (self simpleTask: 'Some simple task'))
+		  (OrderedCollection with: (self simpleTask: 'Task inside "To do" section'))
 ]

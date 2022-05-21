@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'rawData',
 		'tasks',
-		'comments'
+		'comments',
+		'sections'
 	],
 	#category : #TdKanban
 }
@@ -15,10 +16,14 @@ TdkbProject class >> withName: aString [
 	^ TdkbProject new rawData: (Dictionary with: #name -> aString)
 ]
 
-{ #category : #accessing }
-TdkbProject class >> withTitle: aString [ 
+{ #category : #'as yet unclassified' }
+TdkbProject >> addSections: aCollection [ 
+	self sections addAll: aCollection.
+]
 
-	^ TdkbProject new rawData: (Dictionary with: #name -> aString)
+{ #category : #'as yet unclassified' }
+TdkbProject >> addTasks: aCollection [ 
+	self tasks addAll: aCollection.
 ]
 
 { #category : #accessing }
@@ -26,12 +31,15 @@ TdkbProject >> asTask [
 
 	| taskData |
 	taskData := Dictionary with: #content -> self name.
-	^ TdkbTask new rawData: taskData
+	^ TdkbTask new 
+		rawData: taskData;
+		withTasks: (self children collect: [ :child | child asTask]);
+		yourself
 ]
 
 { #category : #accessing }
 TdkbProject >> children [
-	^ self tasks
+	^ self sections, self tasks
 ]
 
 { #category : #'as yet unclassified' }
@@ -61,6 +69,12 @@ TdkbProject >> name [
 TdkbProject >> rawData: aDictionary [
 
 	rawData := aDictionary
+]
+
+{ #category : #accessing }
+TdkbProject >> sections [
+	sections ifNil: [ sections := OrderedCollection new ].
+	^ sections
 ]
 
 { #category : #accessing }
