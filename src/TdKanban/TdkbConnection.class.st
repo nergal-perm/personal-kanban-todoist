@@ -31,21 +31,38 @@ TdkbConnection >> initialize [
 ]
 
 { #category : #accessing }
-TdkbConnection >> projects [
+TdkbConnection >> items: itemType forProject: aProjectId [ 
+	^ STONJSON fromString: (connection
+		url: baseUrl, '/', itemType;
+		queryAt: 'project_id' put: aProjectId;
+		get)
+]
 
-	| ston |
-	ston := STONJSON fromString: (connection
+{ #category : #accessing }
+TdkbConnection >> project: projectId [
+
+	| tasks sections | 
+	tasks := self tasksForProject: projectId.
+	sections := self sectionsForProject: projectId.
+
+	^ TdkbProject new rawData:
+		  (self projects select: [ :pr | (pr at: #id) = projectId ]) first
+]
+
+{ #category : #accessing }
+TdkbConnection >> projects [
+	^ STONJSON fromString: (connection
 			         url: baseUrl , '/projects';
 			         get).
-	^ TdkbProjectCollection new withProjects: ston
 ]
 
 { #category : #accessing }
 TdkbConnection >> sectionsForProject: aProjectId [
-	^ STONJSON fromString: (connection
-		url: baseUrl, '/sections';
-		queryAt: 'project_id' put: aProjectId;
-		get) 
+
+	| sectionsArray |
+	sectionsArray := self items: 'sections' forProject: aProjectId.
+	^ sectionsArray collect: [ :section | 
+		  TdkbSection new rawData: section ]
 ]
 
 { #category : #accessing }
@@ -54,6 +71,14 @@ TdkbConnection >> tasks [
 	^ (STONJSON fromString: (connection
 			   url: baseUrl , '/tasks';
 			   get)) collect: [ :taskDict | TdkbTask new rawData: taskDict ]
+]
+
+{ #category : #accessing }
+TdkbConnection >> tasksForProject: aProjectId [
+	| tasksArray |
+	tasksArray := self items: 'tasks' forProject: aProjectId.
+	^ tasksArray collect: [ :task | TdkbTask new rawData: task]
+ 
 ]
 
 { #category : #accessing }
