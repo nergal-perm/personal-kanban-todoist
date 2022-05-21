@@ -1,6 +1,6 @@
 Class {
 	#name : #TdkbSection,
-	#superclass : #Object,
+	#superclass : #TdkbItem,
 	#instVars : [
 		'rawData',
 		'tasks'
@@ -23,6 +23,11 @@ TdkbSection >> asTask [
 		  rawData: taskData;
 		  withTasks: tasks;
 		  yourself
+]
+
+{ #category : #accessing }
+TdkbSection >> children [
+	^ self tasks
 ]
 
 { #category : #accessing }

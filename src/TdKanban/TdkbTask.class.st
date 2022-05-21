@@ -1,6 +1,6 @@
 Class {
 	#name : #TdkbTask,
-	#superclass : #Object,
+	#superclass : #TdkbItem,
 	#instVars : [
 		'rawData',
 		'tasks'
@@ -9,15 +9,8 @@ Class {
 }
 
 { #category : #accessing }
-TdkbTask >> gtSubtasksFor: aView [
-
-	<gtView>
-	^ aView columnedTree
-		  title: 'Task Tree';
-		  priority: 1;
-		  items: [ self asArray ];
-		  children: [ :item | item tasks ];
-		  column: 'Title' text: [ :item | item name ]
+TdkbTask >> children [
+	^ self tasks
 ]
 
 { #category : #accessing }
