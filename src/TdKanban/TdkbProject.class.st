@@ -1,6 +1,6 @@
 Class {
 	#name : #TdkbProject,
-	#superclass : #Object,
+	#superclass : #TdkbItem,
 	#instVars : [
 		'rawData',
 		'tasks',
@@ -27,6 +27,11 @@ TdkbProject >> asTask [
 	| taskData |
 	taskData := Dictionary with: #content -> self name.
 	^ TdkbTask new rawData: taskData
+]
+
+{ #category : #accessing }
+TdkbProject >> children [
+	^ self tasks
 ]
 
 { #category : #'as yet unclassified' }

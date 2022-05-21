@@ -5,18 +5,6 @@ Class {
 }
 
 { #category : #accessing }
-TdkbExamples >> descriptionComment [
-
-	<gtExample>
-	| comment |
-	comment := TdkbComment new rawData:
-		           (Dictionary with:
-			            #content -> ('[DESC]', Character lf asString, 'Some description here.')).
-	self assert: comment text equals: 'Some description here'.
-	^ comment
-]
-
-{ #category : #accessing }
 TdkbExamples >> emptyProject [
 
 	"Empty project means a project with just a title"
@@ -39,11 +27,11 @@ TdkbExamples >> emptyProjectConvertsToSimpleTask [
 ]
 
 { #category : #accessing }
-TdkbExamples >> emptySection [
+TdkbExamples >> emptySection: aSectionTitle [
 
 	<gtExample>
 	| emptySection |
-	emptySection := TdkbSection withName: 'To do'.
+	emptySection := TdkbSection withName: aSectionTitle.
 	self assert: emptySection isEmpty.
 	^ emptySection
 ]
@@ -53,7 +41,7 @@ TdkbExamples >> emptySectionConvertsToSimpleTask [
 
 	<gtExample>
 	| emptyTask |
-	emptyTask := self emptySection asTask.
+	emptyTask := (self emptySection: 'To do') asTask.
 	self assert: emptyTask name = 'To do'.
 	^ emptyTask
 ]
@@ -69,15 +57,20 @@ TdkbExamples >> sectionWithTaskConvertsToTaskTree [
 ]
 
 { #category : #accessing }
-TdkbExamples >> simpleTask [
+TdkbExamples >> simpleTask: aTaskTitle [
 
+	<gtExample>
+	<noTest>
 	^ TdkbTask new rawData:
-		  (Dictionary with: #content -> 'Super simple task')
+		  (Dictionary with: #content -> aTaskTitle)
 ]
 
 { #category : #accessing }
 TdkbExamples >> todoSectionWithSingleTask [
 
+	<gtExample>
+	<noTest>
 	| section |
-	^ self emptySection withTasks: (OrderedCollection with: self simpleTask)
+	^ (self emptySection: 'To do') withTasks:
+		  (OrderedCollection with: (self simpleTask: 'Some simple task'))
 ]
