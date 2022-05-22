@@ -24,6 +24,11 @@ TdkbTask >> isEmpty [
 ]
 
 { #category : #accessing }
+TdkbTask >> isInSection: sectionId [ 
+	^ self sectionId = sectionId.
+]
+
+{ #category : #accessing }
 TdkbTask >> isNotEmpty [
 	^ self tasks isEmpty not
 ]
@@ -36,6 +41,11 @@ TdkbTask >> name [
 { #category : #accessing }
 TdkbTask >> rawData: aDictionary [
 	rawData := aDictionary 
+]
+
+{ #category : #accessing }
+TdkbTask >> sectionId [
+^ rawData at: #section_id
 ]
 
 { #category : #accessing }

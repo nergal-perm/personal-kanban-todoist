@@ -41,12 +41,19 @@ TdkbConnection >> items: itemType forProject: aProjectId [
 { #category : #accessing }
 TdkbConnection >> project: projectId [
 
-	| tasks sections | 
+	| tasks sections |
+	"TODO: It seems that it's better to have dedicated Collection class to handle tasks list. One of its responsibilities should be to create a nested task tree out of a flat list of tasks."
 	tasks := self tasksForProject: projectId.
 	sections := self sectionsForProject: projectId.
 
-	^ TdkbProject new rawData:
-		  (self projects select: [ :pr | (pr at: #id) = projectId ]) first
+	"TODO: Create a task tree, then pass it to sections"
+	sections do: [ :section | section withTasksFrom: tasks ].
+	^ TdkbProject new
+		  rawData:
+			  (self projects select: [ :pr | (pr at: #id) = projectId ]) first;
+		  addSections: sections;
+		  addTasks: (tasks select: [ :task | task isInSection: 0]);
+		  yourself
 ]
 
 { #category : #accessing }

@@ -31,6 +31,11 @@ TdkbSection >> children [
 ]
 
 { #category : #accessing }
+TdkbSection >> id [
+^ rawData at: #id
+]
+
+{ #category : #accessing }
 TdkbSection >> isEmpty [
 	"Section is empty when it doesn't have tasks"
 	^ self tasks isEmpty
@@ -56,4 +61,9 @@ TdkbSection >> tasks [
 { #category : #'as yet unclassified' }
 TdkbSection >> withTasks: aCollection [ 
 	tasks := aCollection.
+]
+
+{ #category : #accessing }
+TdkbSection >> withTasksFrom: aCollection [ 
+	tasks := aCollection select: [ :task | task isInSection: self id]
 ]
