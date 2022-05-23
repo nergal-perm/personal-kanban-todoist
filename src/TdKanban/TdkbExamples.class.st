@@ -58,6 +58,36 @@ TdkbExamples >> emptySectionConvertsToSimpleTask [
 ]
 
 { #category : #accessing }
+TdkbExamples >> nestedTasksArray [
+
+	<gtExample>
+	<noTest>
+	^ { 
+		  (Dictionary newFrom: { 
+				   ('id' -> 1).
+				   ('content' -> 'Top Level').
+				   ('order' -> 2) }).
+		  (Dictionary newFrom: { 
+				   ('id' -> 2).
+				   ('parent_id' -> 1).
+				   ('content' -> 'First subtask').
+				   ('order' -> 2) }).
+		  (Dictionary newFrom: { 
+				   ('id' -> 3).
+				   ('parent_id' -> 1).
+				   ('content' -> 'Second subtask').
+				   ('order' -> 1) }).
+		  (Dictionary newFrom: { 
+				   ('id' -> 4).
+				   ('parent_id' -> 2).
+				   ('content' -> 'Second level subtask') }).
+		  (Dictionary newFrom: { 
+				   ('id' -> 5).
+				   ('content' -> 'Very important').
+				   ('order' -> 1) }) }
+]
+
+{ #category : #accessing }
 TdkbExamples >> sectionWithTaskConvertsToTaskTree [
 
 	<gtExample>
@@ -84,6 +114,15 @@ TdkbExamples >> simpleTask: aTaskTitle [
 	<noTest>
 	^ TdkbTask new rawData:
 		  (Dictionary with: #content -> aTaskTitle)
+]
+
+{ #category : #accessing }
+TdkbExamples >> taskArrayConvertsToTaskTree [
+
+	<gtExample>
+	| taskTree |
+	taskTree := TdkbTaskTree new rawData: self nestedTasksArray.
+	^ taskTree
 ]
 
 { #category : #accessing }

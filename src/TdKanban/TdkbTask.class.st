@@ -9,6 +9,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+TdkbTask >> addChild: aTdkbTask [ 
+	self children add: aTdkbTask.
+]
+
+{ #category : #'as yet unclassified' }
 TdkbTask >> asTask [
 	^ self
 ]
@@ -16,6 +21,17 @@ TdkbTask >> asTask [
 { #category : #accessing }
 TdkbTask >> children [
 	^ self tasks
+]
+
+{ #category : #accessing }
+TdkbTask >> hasNoParent [
+
+	^ (rawData includesKey: 'parent_id') not
+]
+
+{ #category : #accessing }
+TdkbTask >> id [
+	^ rawData at: 'id'
 ]
 
 { #category : #accessing }
@@ -31,6 +47,13 @@ TdkbTask >> isInSection: sectionId [
 { #category : #accessing }
 TdkbTask >> isNotEmpty [
 	^ self tasks isEmpty not
+]
+
+{ #category : #accessing }
+TdkbTask >> moveToParent: aDictionary [
+
+	rawData at: 'parent_id' ifPresent: [ :parent | 
+		(aDictionary at: parent) addChild: self]
 ]
 
 { #category : #accessing }
