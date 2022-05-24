@@ -2,26 +2,28 @@ Class {
 	#name : #TdkbTaskTree,
 	#superclass : #TdkbItem,
 	#instVars : [
-		'rawData',
 		'tasks'
 	],
-	#category : #'TdKanban-Examples'
+	#category : #TdKanban
 }
 
 { #category : #accessing }
 TdkbTaskTree >> asArray [
-	tasks isNil
-		ifTrue: [ tasks:= self asTree ].
-		^ tasks
+
+	tasks ifNil: [ tasks := self asTree ].
+	^ tasks
 ]
 
 { #category : #accessing }
 TdkbTaskTree >> asTree [
 
-	^ rawData collect: [ :task | TdkbTask new rawData: task ]
-]
+	| keys values tree |
+	keys := rawData collect: [ :task | task at: #id ].
+	values := rawData collect: [ :task | TdkbTask new rawData: task ].
 
-{ #category : #accessing }
-TdkbTaskTree >> rawData: anArray [
-	rawData:= anArray. 
+	tree := Dictionary newFromKeys: keys andValues: values.
+
+	values do: [ :task | task moveToParent: tree ].
+
+	^ tree values select: [ :task | task hasNoParent ]
 ]

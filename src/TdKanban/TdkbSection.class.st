@@ -2,7 +2,6 @@ Class {
 	#name : #TdkbSection,
 	#superclass : #TdkbItem,
 	#instVars : [
-		'rawData',
 		'tasks'
 	],
 	#category : #TdKanban
@@ -27,17 +26,15 @@ TdkbSection >> asTask [
 
 { #category : #accessing }
 TdkbSection >> children [
+
 	^ self tasks
 ]
 
 { #category : #accessing }
-TdkbSection >> id [
-^ rawData at: #id
-]
-
-{ #category : #accessing }
 TdkbSection >> isEmpty [
+
 	"Section is empty when it doesn't have tasks"
+
 	^ self tasks isEmpty
 ]
 
@@ -48,22 +45,21 @@ TdkbSection >> name [
 ]
 
 { #category : #accessing }
-TdkbSection >> rawData: aDictionary [
-	rawData := aDictionary. 
-]
-
-{ #category : #accessing }
 TdkbSection >> tasks [
-	tasks ifNil: [ tasks:= OrderedCollection new].
+
+	tasks ifNil: [ tasks := self itemOrderSortedCollection ].
 	^ tasks
 ]
 
-{ #category : #'as yet unclassified' }
-TdkbSection >> withTasks: aCollection [ 
-	tasks := aCollection.
+{ #category : #accessing }
+TdkbSection >> withTasks: aCollection [
+
+	self tasks addAll: aCollection
 ]
 
 { #category : #accessing }
-TdkbSection >> withTasksFrom: aCollection [ 
-	tasks := aCollection select: [ :task | task isInSection: self id]
+TdkbSection >> withTasksFrom: aCollection [
+
+	self tasks addAll:
+		(aCollection select: [ :task | task isInSection: self id ])
 ]

@@ -25,42 +25,43 @@ TdkbConnection >> commentsForProject: aProjectId [
 			   get)
 ]
 
-{ #category : #accessing }
+{ #category : #initialization }
 TdkbConnection >> initialize [
+
 	baseUrl := 'https://api.todoist.com/rest/v1'
 ]
 
 { #category : #accessing }
-TdkbConnection >> items: itemType forProject: aProjectId [ 
+TdkbConnection >> items: itemType forProject: aProjectId [
+
 	^ STONJSON fromString: (connection
-		url: baseUrl, '/', itemType;
-		queryAt: 'project_id' put: aProjectId;
-		get)
+			   url: baseUrl , '/' , itemType;
+			   queryAt: 'project_id' put: aProjectId;
+			   get)
 ]
 
 { #category : #accessing }
 TdkbConnection >> project: projectId [
 
 	| tasks sections |
-	"TODO: It seems that it's better to have dedicated Collection class to handle tasks list. One of its responsibilities should be to create a nested task tree out of a flat list of tasks."
 	tasks := self tasksForProject: projectId.
 	sections := self sectionsForProject: projectId.
 
-	"TODO: Create a task tree, then pass it to sections"
 	sections do: [ :section | section withTasksFrom: tasks ].
 	^ TdkbProject new
 		  rawData:
 			  (self projects select: [ :pr | (pr at: #id) = projectId ]) first;
 		  addSections: sections;
-		  addTasks: (tasks select: [ :task | task isInSection: 0]);
+		  addTasks: (tasks select: [ :task | task isInSection: 0 ]);
 		  yourself
 ]
 
 { #category : #accessing }
 TdkbConnection >> projects [
+
 	^ STONJSON fromString: (connection
-			         url: baseUrl , '/projects';
-			         get).
+			   url: baseUrl , '/projects';
+			   get)
 ]
 
 { #category : #accessing }
@@ -76,19 +77,24 @@ TdkbConnection >> sectionsForProject: aProjectId [
 TdkbConnection >> tasks [
 
 	^ (STONJSON fromString: (connection
-			   url: baseUrl , '/tasks';
-			   get)) collect: [ :taskDict | TdkbTask new rawData: taskDict ]
+			    url: baseUrl , '/tasks';
+			    get)) collect: [ :taskDict | TdkbTask new rawData: taskDict ]
 ]
 
 { #category : #accessing }
 TdkbConnection >> tasksForProject: aProjectId [
+
 	| tasksArray |
 	tasksArray := self items: 'tasks' forProject: aProjectId.
-	^ tasksArray collect: [ :task | TdkbTask new rawData: task]
- 
+	^ TdkbTaskTree new
+		  rawData: tasksArray;
+		  asTree
 ]
 
 { #category : #accessing }
-TdkbConnection >> withToken: aString [ 
-    connection := ZnClient new headerAt: 'Authorization' put: 'Bearer ', aString
+TdkbConnection >> withToken: aString [
+
+	connection := ZnClient new
+		              headerAt: 'Authorization'
+		              put: 'Bearer ' , aString
 ]

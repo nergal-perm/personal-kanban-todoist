@@ -122,7 +122,7 @@ TdkbExamples >> taskArrayConvertsToTaskTree [
 	<gtExample>
 	| taskTree |
 	taskTree := TdkbTaskTree new rawData: self nestedTasksArray.
-	^ taskTree
+	^ taskTree asTree
 ]
 
 { #category : #accessing }

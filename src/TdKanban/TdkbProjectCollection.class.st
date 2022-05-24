@@ -13,16 +13,14 @@ TdkbProjectCollection >> gtProjectsFor: aView [
 
 	<gtView>
 	^ aView columnedList
-		title: 'Projects';
-		priority: 10;
-		items: [ items ];
-		column: 'Id' 
-			text: [ :eachItem | 
-				eachItem id asRopedText foreground: Color gray ]
-			width: 100;
-		column: 'Title' 
-			text: [ :eachItem | eachItem name gtDisplayText ].
-	
+		  title: 'Projects';
+		  priority: 10;
+		  items: [ items ];
+		  column: 'Id'
+		  text: [ :eachItem | 
+			  eachItem id asRopedText foreground: Color gray ]
+		  width: 100;
+		  column: 'Title' text: [ :eachItem | eachItem name gtDisplayText ]
 ]
 
 { #category : #accessing }
@@ -32,8 +30,9 @@ TdkbProjectCollection >> initialize [
 ]
 
 { #category : #accessing }
-TdkbProjectCollection >> withProjects: ston [ 
+TdkbProjectCollection >> withProjects: ston [
 
-items := (ston reject: [ :pr | baseProjects includes: (pr at: 'name') ]) 
-		  collect: [ :pr | TdkbProject new rawData: pr ]
+	items := (ston reject: [ :pr | 
+		          baseProjects includes: (pr at: 'name') ]) collect: [ :pr | 
+		         TdkbProject new rawData: pr ]
 ]
